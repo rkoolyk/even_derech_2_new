@@ -1,8 +1,4 @@
-
-
-
-var titles = [];
-
+let titles = [];
 //helper function to make an empty 2d array
 function create2dArr(rows, cols) {
     let array = [rows, cols], i, l;
@@ -46,10 +42,13 @@ function parseCSV(file) {
     return dict;
 }
 
-var methods = {
+const methods = {
 
     //given string of csv file, split it into dictionary where keys are titles and values are columns
 
+    sum: function(a ,b) {
+        return a+b;
+    },
 
     Timseries: function (file) {
         this.ts = parseCSV(file);
