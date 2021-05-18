@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Anomaly Detection Server</title>
@@ -8,8 +8,7 @@
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(6, 1fr);
-            grid-gap: 10px;
-            padding: 10px;
+            padding: 15px;
         }
         .title {
             grid-row: 1 / 2;
@@ -20,26 +19,43 @@
         .upload-train {
             grid-row: 2 / 3;
             grid-column: 1 / 3;
+            background-color: lightcyan;
         }
-
         .upload-flight {
             grid-row: 3 / 4;
             grid-column: 1 / 3;
+            background-color: lavender;
         }
         .choose-algo {
             grid-row: 4 / 5;
             grid-column: 1 / 3;
+            background-color: lightgoldenrodyellow;
+        }
+        .upload {
+            grid-row: 5 / 6;
+            grid-column: 1 / 3;
+        }
+        .submit-btn {
+            font-size: 18px;
+            background-color: mistyrose;
         }
         .frame {
             grid-row: 2 / 4;
             grid-column: 4 / 8;
+        }
+        .clouds {
+            grid-row: 2 / 6;
+            grid-column: 8 / 9;
         }
     </style>
 </head>
 <body>
 <div class="content">
     <div class="title">
-        <p>Anomaly Detection Server</p>
+        <table cellpadding="10px"><tr>
+            <td><p>Anomaly Detection Server</p></td>
+            <td> <img src="plane.png" width="100" height="100"/></td>
+        </tr></table>
     </div>
     <div class="upload-train">
         <p style="font-size: 18px" >Upload a train CSV file:</p>
@@ -56,10 +72,24 @@
             <option>Hyrbid Algorithm</option>
         </select>
     </div>
+    <div class="upload">
+        <input class="submit-btn" type="submit"/>
+    </div>
+    <div class="clouds">
+        <table>
+            <tr><img src="cloud1.png" width="70" height="70"/></tr>
+            <br/>
+            <tr> <td/>
+                <td>
+                     <img src="cloud2.png" width="70" height="70"/></tr>
+                </td>
+            <br/>
+            <tr><img src="cloud1.png" width="70" height="70"/></tr>
+        </table>
+    </div>
     <div class="frame">
         <iframe name="iframe" width="100%" height="100%"/>
     </div>
 </div>
-</table>
 </body>
 </html>
