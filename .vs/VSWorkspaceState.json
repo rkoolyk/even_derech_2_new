@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\model",
+    "\\view"
   ],
+  "SelectedNode": "\\model\\CircleAnomalyDetector.js",
   "PreviewInSolutionExplorer": false
 }

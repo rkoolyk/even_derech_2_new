@@ -31,7 +31,6 @@ app.post('/upload', (req, res) => {
     let trainCSV;
     let pathFlight;
     let pathTrain;
-    let algorithm;
 
     if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send('No files were uploaded.'); // 400 - bad request
 
@@ -39,15 +38,14 @@ app.post('/upload', (req, res) => {
     trainCSV = req.files.trainCSV;
     pathFlight = __dirname + '/uploads/' + flightCSV.name;
     pathTrain = __dirname + '/uploads/' + trainCSV.name;
-    algorithm = req.body.chosenAlgorithm;
 
     trainCSV.mv(pathTrain, function (err) {
         if (err) return res.status(500).send(err); // 500 - upload error
         console.log('Training file uploaded!');
-        /*const trainTS = timeSeries.Timseries(pathTrain);
+        const trainTS = timeSeries.Timseries(pathTrain);
         console.log('Training time series uploaded!');
         simpleDetect.learnNormal(trainTS);
-        console.log('Learning normal completed!');*/
+        console.log('Learning normal completed!');
     });
 
     flightCSV.mv(pathFlight, function (err) {
