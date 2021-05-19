@@ -59,15 +59,15 @@
     </div>
     <div class="upload-train">
         <p style="font-size: 18px" >Upload a train CSV file:</p>
-        <input type="file" name="trainCSV">
+        <input type="file" name="trainCSV" id="trainFile">
     </div>
     <div class="upload-flight">
         <p style="font-size: 18px" >Upload a flight CSV file:</p>
-        <input type="file" name="flightCSV">
+        <input type="file" name="flightCSV" id="flightFile">
     </div>
     <div class="choose-algo">
         <p style="font-size: 18px" >Select an anomaly detection algorithm:</p>
-        <select multiple size="3">
+        <select multiple size="3" id="chosenAlgorithm">
             <option>Regression Line Based Algorithm </option>
             <option>Hyrbid Algorithm</option>
         </select>
