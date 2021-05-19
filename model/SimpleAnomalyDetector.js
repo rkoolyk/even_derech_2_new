@@ -12,13 +12,11 @@ function SimpleAnomalyDetector() {
 }
 
 function correlatedFeatures() {
-    this.feature1;
-    this.feature2;// names of the correlated features
-    this.corrlation;
-    this.lin_reg;
+    this.feature1 = '';
+    this.feature2 = '';// names of the correlated features
+    this.corrlation = 0;
+    this.lin_reg = 0;
     this.threshold = 0.9;
-    this.cx;
-    this.cy;
 }
 
 function AnomalyReport(names, time) {
@@ -157,7 +155,9 @@ const methods = {
             const ps = toPoints(another2.getAttributeData(ts, f1), another2.getAttributeData(ts, f2));
             learnHelper(ts, max, f1, f2, ps);
         }
-        return cf;
+        //return cf;
+        //let cfmyJSON = JSON.stringify(cf);
+        return JSON.stringify(cf);
     },
 
     detect: function (ts) {
@@ -185,7 +185,7 @@ const methods = {
                 }
             }
         }
-        return ar;
+        return JSON.stringify(ar);
     }
 
 

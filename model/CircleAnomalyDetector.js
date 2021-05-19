@@ -28,12 +28,12 @@ function getCorrelation(f1, f2, ts) {
 }
 
 function correlatedFeatures() {
-    this.feature1;
-    this.feature2;// names of the correlated features
-    this.corrlation;
+    this.feature1 = '';
+    this.feature2 = '';// names of the correlated features
+    this.corrlation = 0;
     this.threshold = 0.5;
-    this.cx;
-    this.cy;
+    this.cx = 0;
+    this.cy = 0;
 }
 
 function AnomalyReport(names, time) {
@@ -103,7 +103,7 @@ const methods = {
             const ps = toPoints(another2.getAttributeData(ts, f1), another2.getAttributeData(ts, f2));
             learnHelper(ts, max, f1, f2, ps);
         }
-        return cf;
+        return JSON.stringify(cf);
     },
 
     detect: function (ts) {
@@ -132,7 +132,7 @@ const methods = {
                 }
             }
         }
-        return ar;
+        return JSON.stringify(ar);
     }
 };
 
