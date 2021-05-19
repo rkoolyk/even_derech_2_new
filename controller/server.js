@@ -1,8 +1,10 @@
 const Joi = require('joi');
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const simpleDetect = require('../model/SimpleAnomalyDetector');
+const circleDetect = require('../model/CircleAnomalyDetector');
+const timeSeries = require('../model/timeSeries');
 //const fileUpload = require('../view/index');
-//const Model = require('../model/')
 
 
 const app = express();
@@ -16,12 +18,12 @@ app.use(fileUpload());
 app.use(express.json());
 
 const current = new Date();
-let num = 0;
+//let num = 0;
 
-const models = [
+/*const models = [
     { model_id: 1, upload_time: '8:00', status: 'ready' },
     { model_id: 2, upload_time: '10:00', status: 'pending' }
-];
+];*/
 
 app.post('/upload', (req, res) => {
     console.log('Uploading...');
@@ -34,12 +36,16 @@ app.post('/upload', (req, res) => {
 
     flightCSV = req.files.flightCSV;
     trainCSV = req.files.trainCSV;
-    pathFlight = __dirname + `/uploads/${num+1}` + flightCSV.name;
-    pathTrain = __dirname + `/uploads/${num + 1}` + trainCSV.name;
+    pathFlight = __dirname + '/uploads/' + flightCSV.name;
+    pathTrain = __dirname + '/uploads/' + trainCSV.name;
 
     trainCSV.mv(pathTrain, function (err) {
         if (err) return res.status(500).send(err); // 500 - upload error
-        res.send('Training file uploaded!');
+        console.log('Training file uploaded!');
+        /*const trainTS = timeSeries.Timseries(pathTrain);
+        console.log('Training time series uploaded!');
+        simpleDetect.learnNormal(trainTS);
+        console.log('Learning normal completed!');*/
     });
 
     flightCSV.mv(pathFlight, function (err) {
@@ -55,7 +61,7 @@ app.get('/', (req, res) => {
     res.sendFile("./index.html")
 });
 
-app.post('/api/model/:model_type', (req, res) => {
+/*app.post('/api/model/:model_type', (req, res) => {
     const schema = {
         train_data: Joi.required()
     };
@@ -75,6 +81,7 @@ app.post('/api/model/:model_type', (req, res) => {
     res.status(200); // 200 - success
     res.send(model);
 });
+
 app.get('/api/model/:model_id', (req, res) => {
     //check if model exists
     const modelRequested = models.find(c => c.model_id === parseInt(req.params.model_id));
@@ -82,6 +89,7 @@ app.get('/api/model/:model_id', (req, res) => {
     //return the model
     res.send(modelRequested);
 });
+
 app.delete('/api/model/:model_id', (req, res) => {
     //check if model exists
     const modelRequested = models.find(c => c.model_id === parseInt(req.params.model_id));
@@ -103,11 +111,11 @@ app.post('/api/anomaly/:model_id', (req, res) => {
     const modelRequested = models.find(c => c.model_id === parseInt(req.params.model_id));
     if (!modelRequested) return res.status(404).send(`Model with ID: ${req.params.model_id} was not found.`); // 404 - not found
     res.send(modelRequested);
-});
+});*/
 
 
 
 
 
-const port = 9876;
+const port = 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
