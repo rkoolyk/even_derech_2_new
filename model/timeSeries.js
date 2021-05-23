@@ -8,6 +8,15 @@ function create2dArr(rows, cols) {
     return array;
 }
 
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 function parseCSV(file) {
     const data = file.split("\n").map(function (row) { return row.split(","); });
     const headers = data[0]; //array of titles to be made keys
@@ -50,8 +59,12 @@ const methods = {
         return a+b;
     },
 
-    Timseries: function (file) {
-        this.ts = parseCSV(file);
+    Timseries: function (csvfile) {
+        var stringFile = document.querySelector('#files > input[type="file"]').files[0];
+        getBase64(csvfile).then(
+            data => console.log(data)
+        );
+        this.ts = parseCSV(stringFile);
         this.atts = titles;
         this.dataRowSize = this.ts[titles[0]].length - 1;
     },
