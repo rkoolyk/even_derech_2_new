@@ -60,10 +60,8 @@ const methods = {
     },
 
     Timseries: function (csvfile) {
-        var stringFile = document.querySelector('#files > input[type="file"]').files[0];
-        getBase64(csvfile).then(
-            data => console.log(data)
-        );
+        //let stringFile = document.querySelector('#files > input[type="file"]').files[0];
+        let stringFile = csvfile.readAsText("utf-8");
         this.ts = parseCSV(stringFile);
         this.atts = titles;
         this.dataRowSize = this.ts[titles[0]].length - 1;
