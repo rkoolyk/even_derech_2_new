@@ -23,49 +23,25 @@ app.post('/detect', (req, res) => {
     let pathTrain;
     let algorithm;
 
-    //if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send('No files were uploaded.'); // 400 - bad request
+    if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send('No files were uploaded.'); // 400 - bad request
 
-    //flightCSV = req.files.flightCSV;
-    //trainCSV = req.files.trainCSV;
-    //pathFlight = __dirname + '/uploads/' + flightCSV.name;
-    //pathTrain = __dirname + '/uploads/' + trainCSV.name;
-    pathFlight = '../testFile.csv'
-    trainFlight = '../trainFile.csv'
+    flightCSV = req.files.flightCSV;
+    trainCSV = req.files.trainCSV;
     if (req.body.chosenAlgorithm === 'Hybrid Alorithm') algorithm = circleDetect;
     else algorithm = simpleDetect;
 
     console.log('Training file uploaded!');
-    const trainTS = timeSeries.Timseries(pathTrain);
+    const trainTS = timeSeries.Timseries(trainCSV);
     console.log('Training time series uploaded!');
     algorithm.learnNormal(trainTS);
     console.log('Learning normal completed!');
 
-    /*trainCSV.mv(pathTrain, function (err) {
-        if (err) return res.status(500).send(err); // 500 - upload error
-        console.log('Training file uploaded!');
-        const trainTS = timeSeries.Timseries(pathTrain);
-        console.log('Training time series uploaded!');
-        algorithm.learnNormal(trainTS);
-        console.log('Learning normal completed!');
-    });*/
-
     console.log('Flight file uploaded!');
-    const flightTS = timeSeries.Timseries(pathFlight);
+    const flightTS = timeSeries.Timseries(flightCSV);
     console.log('Flight time series uploaded!');
     const result = algorithm.detect(flightTS);
     console.log('Detection completed!');
     res.status(200).send(result).sendFile("./index.html"); // 200 - success
-
-    /*flightCSV.mv(pathFlight, function (err) {
-        if (err) return res.status(500).send(err); // 500 - upload error
-        console.log('Flight file uploaded!');
-        const flightTS = timeSeries.Timseries(pathFlight);
-        console.log('Flight time series uploaded!');
-        const result = algorithm.detect(flightTS);
-        console.log('Detection completed!');
-        res.status(200).send(result).sendFile("./index.html"); // 200 - success
-    });*/
-
     
 });
 
