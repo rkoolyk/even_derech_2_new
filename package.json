@@ -13,9 +13,12 @@
     "csv-parse": "^4.15.4",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "joi": "^17.4.0"
+    "file-api": "^0.10.4",
+    "joi": "^17.4.0",
+    "require-text": "0.0.1"
   },
   "devDependencies": {
+    "filereader": "^0.10.3",
     "smallest-enclosing-circle": "^1.0.2"
   }
 }

@@ -1,3 +1,7 @@
+let FileReader = require('filereader');
+//var fapi = require('file-api');
+let fs = require('fs')
+
 let titles = [];
 //helper function to make an empty 2d array
 function create2dArr(rows, cols) {
@@ -19,6 +23,7 @@ function getBase64(file) {
 
 function parseCSV(file) {
     const data = file.split("\n").map(function (row) { return row.split(","); });
+
     const headers = data[0]; //array of titles to be made keys
     titles = headers;
     let dict = {};
@@ -32,7 +37,9 @@ function parseCSV(file) {
     for (let i = 0; i < headers.length; i++) {
         for (let j = 0; j < array.length; j++) {
             colArray[i][j] = array[j][i];
+
         }
+
     }
     for (let i = 0; i < headers.length; i++) {
         dict[headers[i]] = colArray[i]; //put keys and values into dictionary
@@ -60,11 +67,7 @@ const methods = {
     },
 
     Timseries: function (csvfile) {
-        var stringFile = document.querySelector('#files > input[type="file"]').files[0];
-        getBase64(csvfile).then(
-            data => console.log(data)
-        );
-        this.ts = parseCSV(stringFile);
+        this.ts = parseCSV(csvfile.data.toString());
         this.atts = titles;
         this.dataRowSize = this.ts[titles[0]].length - 1;
     },

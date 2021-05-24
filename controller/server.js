@@ -28,13 +28,14 @@ app.post('/detect', (req, res) => {
     else algorithm = simpleDetect;
 
     console.log('Training file uploaded!');
-    const trainTS = timeSeries.Timseries(trainCSV);
+    let trainTS = new timeSeries.Timseries(trainCSV);
+    console.log(trainTS.ts[trainTS.atts[0]]);
     console.log('Training time series uploaded!');
     algorithm.learnNormal(trainTS);
     console.log('Learning normal completed!');
 
     console.log('Flight file uploaded!');
-    const flightTS = timeSeries.Timseries(flightCSV);
+    const flightTS = new timeSeries.Timseries(flightCSV);
     console.log('Flight time series uploaded!');
     const result = algorithm.detect(flightTS);
     console.log('Detection completed!');
