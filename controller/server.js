@@ -4,7 +4,6 @@ const fileUpload = require('express-fileupload');
 const simpleDetect = require('../model/SimpleAnomalyDetector');
 const circleDetect = require('../model/CircleAnomalyDetector');
 const timeSeries = require('../model/timeSeries');
-//const fs = require('fs');
 
 const app = express();
 app.use(express.urlencoded({
@@ -19,8 +18,6 @@ app.post('/detect', (req, res) => {
     console.log('Uploading...');
     let flightCSV;
     let trainCSV;
-    let pathFlight;
-    let pathTrain;
     let algorithm;
 
     if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send('No files were uploaded.'); // 400 - bad request
@@ -45,11 +42,9 @@ app.post('/detect', (req, res) => {
     
 });
 
-
 app.get('/', (req, res) => {
     res.sendFile("./index.html");
 });
-
 /*app.post('/api/model/:model_type', (req, res) => {
     const schema = {
         train_data: Joi.required()

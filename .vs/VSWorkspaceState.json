@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\controller",
     "\\model",
     "\\view"
   ],
+  "SelectedNode": "\\model\\SimpleAnomalyDetector.js",
   "PreviewInSolutionExplorer": false
 }
