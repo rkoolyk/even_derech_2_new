@@ -39,7 +39,7 @@ app.post('/detect', (req, res) => {
     console.log('Flight time series uploaded!');
     const result = algorithm.detect(flightTS);
     console.log('Detection completed!');
-    res.status(200).send(result).sendFile("./index.html"); // 200 - success
+    res.status(200).send(result); // 200 - success
     
 });
 
