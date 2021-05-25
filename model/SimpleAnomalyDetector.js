@@ -137,6 +137,7 @@ function findingThreshhold(a, b) {
 const methods = {
 
     learnNormal: function (ts) {
+        cf = [];//emptying array from last call
         const atts = another2.gettAttributes();
         //var len = another2.getRowSize(ts);
         let i;
@@ -175,7 +176,7 @@ const methods = {
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
 
-            const l = another.linear_reg(toPoints(f1, f2), s2-1);
+            //const l = another.linear_reg(toPoints(f1, f2), s2-1);
 
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
@@ -184,7 +185,7 @@ const methods = {
                 const p = new another.Point(parseFloat(f1[j]), parseFloat(f2[j]));
 
                 //var points = toPoints(f1, f2);
-                if (another.dev(p, l) >  1.1 * cf[i].threshold) {
+                if (another.dev(p, cf[i].lin_reg) >  1.1 * cf[i].threshold) {
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
                     ar[ar.length] = report;

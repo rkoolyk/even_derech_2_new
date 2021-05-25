@@ -13,7 +13,7 @@ function toPoints(x, y) {
     const ps = [];
     let i;
     for (i = 0; i < x.length; i++) {
-        ps[i] = new another.Point(x[i], y[i]);
+        ps[i] = new another.Point(parseFloat(x[i]), parseFloat(y[i]));
     }
     return ps;
 }
@@ -111,6 +111,7 @@ function dist(p1, p2) {
 const methods = {
 
     learnNormal: function (ts) {
+        cf = [];//emptying array from last call
         const atts = another2.gettAttributes();
         //var len = another2.getRowSize(ts);
         let i;
@@ -148,19 +149,19 @@ const methods = {
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
             //var l = another.linear_reg(toPoints(f1, f2), s2);
-            const l = another.linear_reg(toPoints(f1, f2), s2-1);
+            //const l = another.linear_reg(toPoints(f1, f2), s2-1);
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
             for (j = 0; j < s2-1; j++) {
                 let p = new another.Point(f1[j], f2[j]);
                 //var points = toPoints(f1, f2);
-                if (c.corrlation >= 0.9 && another.dev(p, l) >  1.2 * c.threshold) {
+                if (c.corrlation >= 0.9 && another.dev(p, c.lin_reg) >  1.2 * c.threshold) {
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
                     ar[ar.length] = report;
                 }
                else if(c.corrlation>0.5 && c.corrlation < 0.9 && dist(p,new another.Point(c.cx,c.cy))>c.threshold){
-                    console.log('went in second')
+
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
                     ar[ar.length] = report;
