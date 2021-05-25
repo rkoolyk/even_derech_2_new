@@ -136,6 +136,11 @@ function findingThreshhold(a, b) {
 
 const methods = {
 
+    createDetector: function () {
+        SimpleAnomalyDetector();
+        return this;
+    },
+
     learnNormal: function (ts) {
         cf = [];//emptying array from last call
         const atts = another2.gettAttributes();

@@ -4,6 +4,9 @@ const another2 = require('./timeSeries.js');
 
 let cf = [];
 
+function HybridAnomalyDetector() {
+}
+
 function Circle(c, r) {
     this.center = c;
     this.radius = r;
@@ -109,6 +112,11 @@ function dist(p1, p2) {
 
 
 const methods = {
+
+    createDetector: function () {
+        HybridAnomalyDetector();
+        return this;
+    },
 
     learnNormal: function (ts) {
         cf = [];//emptying array from last call

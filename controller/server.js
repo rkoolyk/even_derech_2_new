@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const simpleDetect = require('../model/SimpleAnomalyDetector');
 const hybridDetect = require('../model/HybridAnomalyDetector');
 const timeSeries = require('../model/timeSeries');
+const { createDetector } = require('../model/SimpleAnomalyDetector');
 
 const app = express();
 app.use(express.urlencoded({
@@ -25,16 +26,17 @@ app.post('/detect', (req, res) => {
     trainCSV = req.files.trainCSV;
     if (req.body.chosenAlgorithm === 'Hybrid Algorithm') algorithm = hybridDetect;
     else algorithm = simpleDetect;
+    let detector = algorithm.createDetector();
     console.log('Training file uploaded!');
     let trainTS = new timeSeries.Timseries(trainCSV);
     console.log('Training time series uploaded!');
-    algorithm.learnNormal(trainTS);
+    detector.learnNormal(trainTS);
     console.log('Learning normal completed!');
 
     console.log('Flight file uploaded!');
     const flightTS = new timeSeries.Timseries(flightCSV);
     console.log('Flight time series uploaded!');
-    const result = algorithm.detect(flightTS);
+    const result = detector.detect(flightTS);
     console.log('Detection completed!');
     res.status(200).send(result); // 200 - success
     
