@@ -31,6 +31,7 @@ function correlatedFeatures() {
     this.feature1 = '';
     this.feature2 = '';// names of the correlated features
     this.corrlation = 0;
+    this.lin_reg = 0;
     this.threshold = 0.5;
     this.cx = 0;
     this.cy = 0;
@@ -45,31 +46,57 @@ function AnomalyReport(names, time) {
 
 
 
-
 function learnHelper(ts, p/*pearson*/, f1, f2, ps) {
-
-    //var len = ts.getRowSize();
-    const cl = enclosingCircle(ps);
-    const center = new another.Point(cl.x, cl.y);
-    //var circle = new Circle(center, cl.r);
-    const c = new correlatedFeatures();
-    c.feature1 = f1;
-    c.feature2 = f2;
-    c.corrlation = p;
-    c.threshold = cl.r * 1.1; // 10% increase
-    c.cx = cl.x;
-    c.cy = cl.y;
-    cf[cf.length] = c;
-
+    if (p > 0.9) {
+        let len = another2.getRowSize(ts);
+        let c = new correlatedFeatures();
+        c.feature1 = f1;
+        c.feature2 = f2;
+        c.corrlation = p;
+        c.lin_reg = another.linear_reg(ps, len);
+        c.threshold = findThreshold(ps, len, c.lin_reg) * 1.1; // 10% increase
+        cf[cf.length + 1] = c;
+    }
+    else if(p>0.5&&p<0.9) {
+        const cl = enclosingCircle(ps);
+        const center = new another.Point(cl.x, cl.y);
+        //var circle = new Circle(center, cl.r);
+        const c = new correlatedFeatures();
+        c.feature1 = f1;
+        c.feature2 = f2;
+        c.corrlation = p;
+        c.threshold = cl.r * 1.1; // 10% increase
+        c.cx = cl.x;
+        c.cy = cl.y;
+        cf[cf.length] = c;
+    }
 }
 
-function isAnomalous(x, y, c) {
-    if ((c.corrlation > 0.5 && c.corrlation < 1 && dist(Point(c.cx, c.cy), Point(x, y)) > c.threshold)) {
+function findThreshold(ps, len, rl) {
+    let max = 0;
+    let i;
+    for (i = 0; i < len; i++) {
+        const d = Math.abs(ps[i].y - (rl.a * ps[i].x + rl.b));
+        if (d > max)
+            max = d;
+    }
+    return max;
+}
+
+function isAnomalous(x, y, c, l) {
+    /*if ((c.corrlation > 0.5 && c.corrlation < 1 && dist(Point(c.cx, c.cy), Point(x, y)) > c.threshold)) {
         return 1;
     }
     else {
         return 0;
+    }*/
+    let p = new another.Point(x,y);
+    if(c.correlation >= c.threshhold &&another.dev(p, l) >  1.1 * c.threshold ||
+        c.corrlation>0.5 && c.corrlation < c.threshold && dist(p,new another.Point(x,y))>c.threshold){
+        return 1;
     }
+    return 0;
+
 }
 
 function dist(p1, p2) {
@@ -107,6 +134,7 @@ const methods = {
     },
 
     detect: function (ts) {
+        console.log('***************');
         const ar = [];
         const ContentMap = ts.ts;
         const s = cf.length;
@@ -120,12 +148,14 @@ const methods = {
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
             //var l = another.linear_reg(toPoints(f1, f2), s2);
+            const l = another.linear_reg(toPoints(f1, f2), s2-1);
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
-            for (j = 0; j < s2; j++) {
-                //var p = new another.Point(f1[j], f2[j]);
+            for (j = 0; j < s2-1; j++) {
+                let p = new another.Point(f1[j], f2[j]);
                 //var points = toPoints(f1, f2);
-                if (isAnomalous(f1[i], f2[i], c)) {
+                if (c.corrlation >= c.threshold && another.dev(p, l) >  1.1 * c.threshold ||
+                    c.corrlation>0.5 && c.corrlation < c.threshold && dist(p,new another.Point(c.cx,c.cy))>c.threshold) {
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
                     ar[ar.length + 1] = report;

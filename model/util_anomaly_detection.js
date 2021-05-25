@@ -2,9 +2,11 @@
 
 function average(array, size) {
     let i;
-    let counter;
+    let counter = 0;
+    let x = 0;
     for (i = 0; i < size; i++) {
-        counter += array[i];
+        x = parseFloat(array[i]);
+        counter += x;
     }
     return counter / size;
 }
@@ -24,7 +26,7 @@ function variance(arr, size) {
     let sigma = 0.0;
     let i;
     for (i = 0; i < size; i++) {
-        sigma += arr[i] * arr[i];
+        sigma += parseFloat(arr[i]) * parseFloat(arr[i]);
     }
     const div = sigma / size;
     return div - (u * u);
@@ -34,25 +36,26 @@ function cov(x, y, size) {
     let sum = 0;
     let i;
     for (i = 0; i < size; i++) {
-        sum += x[i] * y[i];
+        sum += parseFloat(x[i]) * parseFloat(y[i]);
     }
+
     sum /= size;
 
     return sum - average(x, size) * average(y, size);
 }
 
 function dev(p, l) {
-    return Math.abs(p.y - l.f(p.x));
+    return Math.abs(p.y - (l.a * p.x + l.b));
 }
 
 
 function linear_reg(points, size) {
-    let a;
+    let a = 0;
     let x, y;
     let i;
     for (i = 0; i < size; i++) {
-        x[i] = points[i].x;
-        y[i] = points[i].y;
+        x[i] = parseFloat(points[i].x);
+        y[i] = parseFloat(points[i].y);
     }
     if (variance(x, size) == 0) {
         a = cov(x, y, size) / 0.01;
@@ -61,7 +64,7 @@ function linear_reg(points, size) {
     }
     const b = average(y, size) - a * (average(x, size));
 
-    return Line(a, b);
+    return new Line(a, b);
 }
 
 const methods = {
@@ -76,22 +79,27 @@ const methods = {
     },
 
     linear_reg: function (points, size) {
-        let x, y;
+        let x = [];
+        let y = [];
         let i;
         for (i = 0; i < size; i++) {
-            x[i] = points[i].x;
-            y[i] = points[i].y;
+            x[i] = parseFloat(points[i].x);
+            y[i] = parseFloat(points[i].y);
         }
         const a = cov(x, y, size) / variance(x, size);
         const b = average(y, size) - a * (average(x, size));
 
-        return Line(a, b);
+        return new Line(a, b);
     },
 
     dev: function (p, points, size) {
         const l = linear_reg(points, size);
         return dev(p, l);
     },
+
+    dev: function (p, l) {
+    return Math.abs(p.y - (l.a * p.x + l.b));
+    }
 
 
 };

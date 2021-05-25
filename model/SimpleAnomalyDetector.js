@@ -27,8 +27,9 @@ function AnomalyReport(names, time) {
 function toPoints(x, y) {
     const ps = [];
     let i;
-    for (i = 0; i < x.length; i++) {
-        ps[i] = new another.Point(x[i], y[i]);
+
+    for (i = 0; i < x.length-1; i++) {
+        ps[i] = new another.Point(parseFloat(x[i]), parseFloat(y[i]));
     }
     return ps;
 }
@@ -68,6 +69,7 @@ function findThreshold(ps, len, rl) {
 }*/
 
 function learnHelper(ts, p/*pearson*/, f1, f2, ps) {
+
     if (p > 0.9) {
         const len = another2.getRowSize(ts);
         const c = new correlatedFeatures();
@@ -76,7 +78,7 @@ function learnHelper(ts, p/*pearson*/, f1, f2, ps) {
         c.corrlation = p;
         c.lin_reg = another.linear_reg(ps, len);
         c.threshold = findThreshold(ps, len, c.lin_reg) * 1.1; // 10% increase
-        cf[cf.length + 1] = c;
+        cf[cf.length] = c;
     }
 }
 
@@ -172,16 +174,20 @@ const methods = {
             const f1 = ContentMap[feature1];
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
-            const l = another.linear_reg(toPoints(f1, f2), s2);
+
+            const l = another.linear_reg(toPoints(f1, f2), s2-1);
+
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
-            for (j = 0; j < s2; j++) {
-                const p = new another.Point(f1[j], f2[j]);
+            for (j = 0; j < s2 - 1; j++) {
+
+                const p = new another.Point(parseFloat(f1[j]), parseFloat(f2[j]));
+
                 //var points = toPoints(f1, f2);
-                if (another.dev(p, l) > (1.1) * cf[i].threshold) {
+                if (another.dev(p, l) >  1.1 * cf[i].threshold) {
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
-                    ar[ar.length + 1] = report;
+                    ar[ar.length] = report;
                 }
             }
         }

@@ -2,7 +2,7 @@ const Joi = require('joi');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const simpleDetect = require('../model/SimpleAnomalyDetector');
-const circleDetect = require('../model/CircleAnomalyDetector');
+const circleDetect = require('../model/HybridAnomalyDetector');
 const timeSeries = require('../model/timeSeries');
 
 const app = express();
@@ -29,7 +29,6 @@ app.post('/detect', (req, res) => {
 
     console.log('Training file uploaded!');
     let trainTS = new timeSeries.Timseries(trainCSV);
-    console.log(trainTS.ts[trainTS.atts[0]]);
     console.log('Training time series uploaded!');
     algorithm.learnNormal(trainTS);
     console.log('Learning normal completed!');
