@@ -55,9 +55,10 @@ function learnHelper(ts, p/*pearson*/, f1, f2, ps) {
         c.corrlation = p;
         c.lin_reg = another.linear_reg(ps, len);
         c.threshold = findThreshold(ps, len, c.lin_reg) * 1.1; // 10% increase
-        cf[cf.length + 1] = c;
+        cf[cf.length] = c;
     }
     else if(p>0.5&&p<0.9) {
+
         const cl = enclosingCircle(ps);
         const center = new another.Point(cl.x, cl.y);
         //var circle = new Circle(center, cl.r);
@@ -134,7 +135,6 @@ const methods = {
     },
 
     detect: function (ts) {
-        console.log('***************');
         const ar = [];
         const ContentMap = ts.ts;
         const s = cf.length;
@@ -154,11 +154,16 @@ const methods = {
             for (j = 0; j < s2-1; j++) {
                 let p = new another.Point(f1[j], f2[j]);
                 //var points = toPoints(f1, f2);
-                if (c.corrlation >= c.threshold && another.dev(p, l) >  1.1 * c.threshold ||
-                    c.corrlation>0.5 && c.corrlation < c.threshold && dist(p,new another.Point(c.cx,c.cy))>c.threshold) {
+                if (c.corrlation >= 0.9 && another.dev(p, l) >  1.2 * c.threshold) {
                     const features = feature1 + "-" + feature2;
                     const report = new AnomalyReport(features, j + 1);
-                    ar[ar.length + 1] = report;
+                    ar[ar.length] = report;
+                }
+               else if(c.corrlation>0.5 && c.corrlation < 0.9 && dist(p,new another.Point(c.cx,c.cy))>c.threshold){
+                    console.log('went in second')
+                    const features = feature1 + "-" + feature2;
+                    const report = new AnomalyReport(features, j + 1);
+                    ar[ar.length] = report;
                 }
             }
         }

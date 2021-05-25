@@ -24,9 +24,8 @@ app.post('/detect', (req, res) => {
 
     flightCSV = req.files.flightCSV;
     trainCSV = req.files.trainCSV;
-    if (req.body.chosenAlgorithm === 'Hybrid Alorithm') algorithm = circleDetect;
+    if (req.body.chosenAlgorithm === 'Hybrid Algorithm') algorithm = circleDetect;
     else algorithm = simpleDetect;
-
     console.log('Training file uploaded!');
     let trainTS = new timeSeries.Timseries(trainCSV);
     console.log('Training time series uploaded!');
