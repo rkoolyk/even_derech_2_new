@@ -4,6 +4,7 @@ const simpleDetect = require('../model/SimpleAnomalyDetector');
 const hybridDetect = require('../model/HybridAnomalyDetector');
 const timeSeries = require('../model/timeSeries');
 const { createDetector } = require('../model/SimpleAnomalyDetector');
+//const { function } = require('joi');
 
 const app = express();
 app.use(express.urlencoded({
@@ -37,8 +38,13 @@ app.post('/detect', (req, res) => {
     const flightTS = new timeSeries.Timseries(flightCSV);
     console.log('Flight time series uploaded!');
     const result = detector.detect(flightTS);
+    let tmpData = JSON.parse(`${result}`);
+    let data = [];
+    tmpData.forEach(function (element) {
+        data.push(`Anomaly found in : ${element.description} at time: ${element.timestep} </br>`);
+    });
     console.log('Detection completed!');
-    res.status(200).send(result); // 200 - success
+    res.status(200).send(data.join('')); // 200 - success
     
 });
 
