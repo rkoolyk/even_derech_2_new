@@ -15,8 +15,7 @@ app.use(express.static('../view'));
 
 app.use(fileUpload());
 
-app.post('/detect', (req, res) => {
-    console.log('Uploading...');
+function detect(req) {
     let flightCSV;
     let trainCSV;
     let algorithm;
@@ -28,24 +27,28 @@ app.post('/detect', (req, res) => {
     if (req.body.chosenAlgorithm === 'Hybrid Algorithm') algorithm = hybridDetect;
     else algorithm = simpleDetect;
     let detector = algorithm.createDetector();
-    console.log('Training file uploaded!');
     let trainTS = new timeSeries.Timseries(trainCSV);
-    console.log('Training time series uploaded!');
     detector.learnNormal(trainTS);
-    console.log('Learning normal completed!');
 
-    console.log('Flight file uploaded!');
     const flightTS = new timeSeries.Timseries(flightCSV);
-    console.log('Flight time series uploaded!');
     const result = detector.detect(flightTS);
+    return result;
+}
+
+app.post('/detect', (req, res) => {
+    const result = detect(req);
+    res.status(200).send(result); // 200 - success    
+});
+
+app.post('/upload', (req, res) => {
+    const result = detect(req);
     let tmpData = JSON.parse(`${result}`);
     let data = [];
     tmpData.forEach(function (element) {
         data.push(`Anomaly found in : ${element.description} at time: ${element.timestep} </br>`);
     });
-    console.log('Detection completed!');
     res.status(200).send(data.join('')); // 200 - success
-    
+
 });
 
 app.get('/', (req, res) => {
