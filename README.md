@@ -43,5 +43,5 @@
   * The anomalies will now be shown in the frame 
 
 **Additional Links:**
-  * UML layout 
+  * UML layout https://github.com/rkoolyk/even_derech_2_new/blob/master/UML_ed2.PNG
   * Video demo of App 
