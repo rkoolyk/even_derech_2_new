@@ -45,7 +45,7 @@ app.post('/upload', (req, res) => {
     let tmpData = JSON.parse(`${result}`);
     let data = [];
     tmpData.forEach(function (element) {
-        data.push(`Anomaly found in : ${element.description} at time: ${element.timestep} </br>`);
+        data.push(`Anomaly found in : ${element.description} at timestep: ${element.timestep} </br>`);
     });
     res.status(200).send(data.join('')); // 200 - success
 
