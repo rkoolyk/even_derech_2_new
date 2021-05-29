@@ -44,4 +44,4 @@
 
 **Additional Links:**
   * UML layout https://github.com/rkoolyk/even_derech_2_new/blob/master/UML.JPG
-  * Video demo of App 
+  * Video demo of App https://github.com/rkoolyk/even_derech_2_new/blob/master/zoom_2.mp4
