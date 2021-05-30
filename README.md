@@ -37,10 +37,20 @@
 **Instruction to Run Application:**
   * After completing the appropriate installations, download project files to computer
   * Open the terminal and enter the controller folder 
-  * Run the command- node server 
+  * Run the command `node server`
   * Open the webpage http://localhost:8080
   * Upload files, choose algorithm and press submit 
   * The anomalies will now be shown in the frame 
+
+**Instruction to Create POST request via API:**
+  * After completing the appropriate installations, download project files to computer
+  * Open the terminal and enter the controller folder 
+  * Run the command `node server`
+  * Request URL: http://localhost:8080/detect
+  * In the request body, three keys must be provided
+    * flightCSV - must provide the path to the file used to detect the anomalies
+    * trainCSV - must provide the path to the file used to train the anomaly detector
+    * chosenAlgorithm - if provided with *Hybrid Algorithm* then that algorithm will be picked, otherwise, *Simple Algorithm* is the default
 
 **Additional Links:**
   * UML layout https://github.com/rkoolyk/even_derech_2_new/blob/master/UML.JPG
