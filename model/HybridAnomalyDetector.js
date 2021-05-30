@@ -7,11 +7,8 @@ let cf = [];
 function HybridAnomalyDetector() {
 }
 
-function Circle(c, r) {
-    this.center = c;
-    this.radius = r;
-}
 
+//turns two vectors of floats to points
 function toPoints(x, y) {
     const ps = [];
     let i;
@@ -87,21 +84,7 @@ function findThreshold(ps, len, rl) {
     return max;
 }
 
-function isAnomalous(x, y, c, l) {
-    /*if ((c.corrlation > 0.5 && c.corrlation < 1 && dist(Point(c.cx, c.cy), Point(x, y)) > c.threshold)) {
-        return 1;
-    }
-    else {
-        return 0;
-    }*/
-    let p = new another.Point(x,y);
-    if(c.correlation >= c.threshhold &&another.dev(p, l) >  1.1 * c.threshold ||
-        c.corrlation>0.5 && c.corrlation < c.threshold && dist(p,new another.Point(x,y))>c.threshold){
-        return 1;
-    }
-    return 0;
 
-}
 
 function dist(p1, p2) {
     const xDiff = p1.x - p2.x;
@@ -156,8 +139,7 @@ const methods = {
             const f1 = ContentMap[feature1];
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
-            //var l = another.linear_reg(toPoints(f1, f2), s2);
-            //const l = another.linear_reg(toPoints(f1, f2), s2-1);
+
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
             for (j = 0; j < s2-1; j++) {
