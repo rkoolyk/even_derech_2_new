@@ -8,7 +8,7 @@ function HybridAnomalyDetector() {
 }
 
 
-
+//turns two vectors of floats to points
 function toPoints(x, y) {
     const ps = [];
     let i;
@@ -139,8 +139,7 @@ const methods = {
             const f1 = ContentMap[feature1];
             const f2 = ContentMap[feature2];
             const s2 = f1.length;
-            //var l = another.linear_reg(toPoints(f1, f2), s2);
-            //const l = another.linear_reg(toPoints(f1, f2), s2-1);
+
             //finding for each 2d point the dev to check if it is greater than the threshold
             let j;
             for (j = 0; j < s2-1; j++) {
