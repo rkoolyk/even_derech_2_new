@@ -1,4 +1,4 @@
-//import { sqrt, abs } from 'mathjs'
+
 
 function average(array, size) {
     let i;
